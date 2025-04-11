@@ -1,0 +1,29 @@
+.index {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  .component-title{
+    font-size: 36px;
+    margin-bottom: 48px;
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .block-title {
+    width: 100%;
+    font-size: 32px;
+    text-align: left;
+    margin: 48px 0 36px;
+  }
+}
+
+.controller {
+  margin-top: 24px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}

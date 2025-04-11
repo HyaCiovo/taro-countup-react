@@ -1,0 +1,14 @@
+.count-up {
+  display: inline-flex;
+  text-align: center;
+  color:#333;
+  font-size: 40px;
+  line-height: 1;
+
+  &__prefix,
+  &__suffix,
+  &__content {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
