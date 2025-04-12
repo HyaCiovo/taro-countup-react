@@ -60,24 +60,24 @@ import react from 'react'
 import { View, Button } from '@tarojs/components'
 
 export default function Demo() {
-  const CountToRef = react.useRef<any>()
+  const CountUpRef = react.useRef<any>()
   const handleFinish = () => {
     console.log('count finish')
   }
 
   return (
     <View>
-      <CountTo
+      <CountUp
         startVal={30}
         endVal={500}
-        ref={CountToRef}
+        ref={CountUpRef}
         onFinish={handleFinish}
       />
       <View>
-        <Button onClick={() => CountToRef.current?.start()} >开始</Button>
-        <Button onClick={() => CountToRef.current?.pause()} >暂停</Button>
-        <Button onClick={() => CountToRef.current?.resume()} >继续</Button>
-        <Button onClick={() => CountToRef.current?.reset()} >重置</Button>
+        <Button onClick={() => CountUpRef.current?.start()} >开始</Button>
+        <Button onClick={() => CountUpRef.current?.pause()} >暂停</Button>
+        <Button onClick={() => CountUpRef.current?.resume()} >继续</Button>
+        <Button onClick={() => CountUpRef.current?.reset()} >重置</Button>
       </View>
     </View>
   )
@@ -91,7 +91,7 @@ export default function Demo() {
 
 
 
-### ICountToRef
+### ICountUpRef
 
 | 参数   | 说明                                     | 类型                                    |
 | ------ | ---------------------------------------- | --------------------------------------- |
@@ -100,7 +100,7 @@ export default function Demo() {
 | resume | 暂停后重新开始滚动(从暂停前的值开始滚动) | _&nbsp;&nbsp;()&nbsp;=>&nbsp;void<br/>_ |
 | reset  | 重设至初始值                             | _&nbsp;&nbsp;()&nbsp;=>&nbsp;void<br/>_ |
 
-### CountToProps
+### CountUpProps
 
 | 参数      | 说明                         | 类型                                                                                                                                                                   | 默认值 | 必填    |
 | --------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- |
@@ -115,5 +115,5 @@ export default function Demo() {
 | useEasing | 是否缓动结束滚动             | _&nbsp;&nbsp;boolean<br/>_                                                                                                                                             | true   | `false` |
 | separator | 千分位分隔符                 | _&nbsp;&nbsp;string<br/>_                                                                                                                                              | -      | `false` |
 | onFinish  | 滚动结束时触发               | _&nbsp;&nbsp;()&nbsp;=>&nbsp;void<br/>_                                                                                                                                | -      | `false` |
-| ref       | 数字滚动实例                 | _&nbsp;&nbsp;React.MutableRefObject<<br/>&nbsp;&nbsp;&nbsp;&nbsp;&brvbar;&nbsp;ICountToRef<br/>&nbsp;&nbsp;&nbsp;&nbsp;&brvbar;&nbsp;undefined<br/>&nbsp;&nbsp;><br/>_ | -      | `false` |
+| ref       | 数字滚动实例                 | _&nbsp;&nbsp;React.MutableRefObject<<br/>&nbsp;&nbsp;&nbsp;&nbsp;&brvbar;&nbsp;ICountUpRef<br/>&nbsp;&nbsp;&nbsp;&nbsp;&brvbar;&nbsp;undefined<br/>&nbsp;&nbsp;><br/>_ | -      | `false` |
 

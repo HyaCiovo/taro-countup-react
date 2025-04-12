@@ -10,7 +10,7 @@ export default function Index() {
     console.log('Page loaded.')
   })
 
-  const CountToRef = React.useRef<any>()
+  const CountUpRef = React.useRef<any>()
 
   return (
     <View className='index'>
@@ -30,13 +30,13 @@ export default function Index() {
         separator=','
         autoStart={false}
         duration={50000}
-        ref={CountToRef}
+        ref={CountUpRef}
       />
       <View className='controller'>
-        <Button onClick={() => CountToRef.current?.start()} >开始</Button>
-        <Button onClick={() => CountToRef.current?.pause()} >暂停</Button>
-        <Button onClick={() => CountToRef.current?.resume()} >继续</Button>
-        <Button onClick={() => CountToRef.current?.reset()} >重置</Button>
+        <Button onClick={() => CountUpRef.current?.start()} >开始</Button>
+        <Button onClick={() => CountUpRef.current?.pause()} >暂停</Button>
+        <Button onClick={() => CountUpRef.current?.resume()} >继续</Button>
+        <Button onClick={() => CountUpRef.current?.reset()} >重置</Button>
       </View>
     </View>
   )

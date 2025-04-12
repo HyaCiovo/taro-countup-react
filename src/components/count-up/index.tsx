@@ -9,11 +9,11 @@ import {
   useImperativeHandle,
 } from 'react'
 import { requestAnimationFrame, cancelAnimationFrame , ensureNumber } from './utils'
-import type { CountToProps, ICountToRef } from './types'
+import type { CountUpProps, ICountUpRef } from './types'
 import './index.scss'
 
 
-const Index = (props: CountToProps, ref: React.ForwardedRef<ICountToRef>) => {
+const Index = (props: CountUpProps, ref: React.ForwardedRef<ICountUpRef>) => {
   const {
     startVal = 0,
     endVal = 0,
