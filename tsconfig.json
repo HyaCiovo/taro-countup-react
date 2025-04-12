@@ -14,8 +14,9 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "rootDir": ".",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "allowJs": true,
+    "jsxImportSource": "solid-js",
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"

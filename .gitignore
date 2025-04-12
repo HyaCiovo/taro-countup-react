@@ -7,6 +7,8 @@ node_modules/
 .swc
 *.local
 weapp/
+h5/
+alipay/
 pnpm-lock.yaml
 yarn.lock
 package-lock.json

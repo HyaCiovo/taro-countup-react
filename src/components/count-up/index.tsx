@@ -1,72 +1,80 @@
 import { useDidHide, useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import {
-  useEffect,
-  useState,
-  useRef,
-  useMemo,
-  forwardRef,
-  useImperativeHandle,
-} from 'react'
-import { requestAnimationFrame, cancelAnimationFrame , ensureNumber } from './utils'
-import type { CountUpProps, ICountUpRef } from './types'
+import { createMemo, createSignal, mergeProps, onCleanup, onMount, splitProps } from 'solid-js'
+import { requestAnimationFrame, cancelAnimationFrame, ensureNumber } from './utils'
+import type { CountToProps } from './types'
 import './index.scss'
 
+const defaultProps = {
+  startVal: 0,
+  endVal: 0,
+  duration: 3000,
+  autoStart: true,
+  decimals: 0,
+  useEasing: true,
+  decimal: '.',
+  separator: '',
+  className: '',
+}
 
-const Index = (props: CountUpProps, ref: React.ForwardedRef<ICountUpRef>) => {
-  const {
-    startVal = 0,
-    endVal = 0,
-    duration = 3000,
-    autoStart = true,
-    decimals = 0,
-    useEasing = true,
-    decimal = '.',
-    separator = '',
-    className = '',
-    prefix,
-    suffix,
-    onFinish,
-  } = props
+const Index = (props: CountToProps) => {
+  const merged = mergeProps(defaultProps, props)
+
+  const [local, _rest] = splitProps(merged, [
+    'startVal',
+    'endVal',
+    'duration',
+    'autoStart',
+    'decimals',
+    'useEasing',
+    'decimal',
+    'separator',
+    'className',
+    'onFinish',
+    'ref',
+    'prefix',
+    'suffix',
+  ])
+
+
+  onMount(() => {
+    local.autoStart && start()
+  })
+
+  useDidShow(() => {
+    local.autoStart && start()
+  })
+
   const formatNumber = (num) => {
     num = Number(num)
-    num = num.toFixed(Number(decimals))
+    num = num.toFixed(Number(local.decimals))
     num += ''
     const x = num.split('.')
     let x1 = x[0]
-    const x2 = x.length > 1 ? decimal + x[1] : ''
+    const x2 = x.length > 1 ? local.decimal + x[1] : ''
     const rgx = /(\d+)(\d{3})/
-    if (separator && !ensureNumber(separator)) {
+    if (local.separator && !ensureNumber(local.separator)) {
       while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + separator + '$2')
+        x1 = x1.replace(rgx, '$1' + local.separator + '$2')
       }
     }
     return x1 + x2
   }
 
-  const [displayValue, setDisplayValue] = useState(formatNumber(startVal))
+  const [displayValue, setDisplayValue] = createSignal<string>(formatNumber(local.startVal))
 
-  const localRef = useRef({
-    localStartVal: startVal,
-    localDuration: duration,
-  })
-  const remaining = useRef<number | null>(null)
-  const paused = useRef<boolean>(true)
-  const rAF = useRef<any>(null)
-  const startTime = useRef<number | null>(null)
-  const printVal = useRef<number>(startVal)
+  let localData = {
+    localStartVal: local.startVal,
+    localDuration: local.duration,
+  }
+  let remaining: number | null = null
+  let paused: boolean = true
+  let rAF: any = null
+  let startTime: number | null = null
+  let printVal: number = local.startVal
 
-  const countDown: boolean = useMemo(() => {
-    return startVal > endVal
-  }, [startVal, endVal])
-
-  useEffect(() => {
-    autoStart && start()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoStart, startVal, endVal])
-
-  useDidShow(() => {
-    autoStart && start()
+  const countDown = createMemo<boolean>(() => {
+    return local.startVal > local.endVal
   })
 
   const easingFn = (t, b, c, d) => {
@@ -74,111 +82,110 @@ const Index = (props: CountUpProps, ref: React.ForwardedRef<ICountUpRef>) => {
   }
 
   const start = () => {
-    if (!paused.current)
+    if (!paused)
       return
-    localRef.current = {
-      localStartVal: startVal,
-      localDuration: duration,
+    localData = {
+      localStartVal: local.startVal,
+      localDuration: local.duration,
     }
-    startTime.current = null
-    paused.current = false
-    rAF.current = requestAnimationFrame(count)
+    startTime = null
+    paused = false
+    rAF = requestAnimationFrame(count)
   }
 
   const pause = () => {
-    if (paused.current)
+    if (paused)
       return
-    paused.current = true
-    cancelAnimationFrame(rAF.current)
+    paused = true
+    cancelAnimationFrame(rAF)
   }
 
   const resume = () => {
-    if (!paused.current)
+    if (!paused)
       return
-    paused.current = false
-    startTime.current = null
-    localRef.current = {
-      localStartVal: printVal.current,
-      localDuration: remaining.current || duration,
+    paused = false
+    startTime = null
+    localData = {
+      localStartVal: printVal,
+      localDuration: remaining || local.duration,
     }
-    rAF.current = requestAnimationFrame(count)
+    rAF = requestAnimationFrame(count)
   }
 
   const reset = () => {
-    paused.current = true
-    cancelAnimationFrame(rAF.current)
-    localRef.current = {
-      localStartVal: startVal,
-      localDuration: duration,
+    paused = true
+    cancelAnimationFrame(rAF)
+    localData = {
+      localStartVal: local.startVal,
+      localDuration: local.duration,
     }
-    printVal.current = startVal
-    remaining.current = null
-    startTime.current = null
-    setDisplayValue(formatNumber(startVal))
+    printVal = local.startVal
+    remaining = null
+    startTime = null
+    setDisplayValue(formatNumber(local.startVal))
   }
 
-  useImperativeHandle(ref, () => ({
-    start: () => start(),
-    pause: () => pause(),
-    resume: () => resume(),
-    reset: () => reset(),
-  }))
+  local.ref && local.ref({
+    start,
+    pause,
+    resume,
+    reset,
+  })
+
 
   const count = (timestamp: number) => {
-    if (!startTime.current) startTime.current = timestamp
+    if (!startTime) startTime = timestamp
 
-    const { localDuration, localStartVal } = localRef.current
+    const { localDuration, localStartVal } = localData
 
-    const progress = timestamp - (startTime.current || 0)
-    remaining.current = localDuration - progress
+    const progress = timestamp - (startTime || 0)
+    remaining = localDuration - progress
 
     let value: number
-    if (useEasing) {
-      value = countDown
-        ? easingFn(progress, 0, localStartVal - endVal, localDuration)
+    if (local.useEasing) {
+      value = countDown()
+        ? easingFn(progress, 0, localStartVal - local.endVal, localDuration)
         : easingFn(
           progress,
           localStartVal,
-          endVal - localStartVal,
+          local.endVal - localStartVal,
           localDuration,
         )
     } else {
-      value = countDown
-        ? localStartVal - (localStartVal - endVal) * (progress / localDuration)
-        : localStartVal + (endVal - localStartVal) * (progress / localDuration)
+      value = countDown()
+        ? localStartVal - (localStartVal - local.endVal) * (progress / localDuration)
+        : localStartVal + (local.endVal - localStartVal) * (progress / localDuration)
     }
 
-    printVal.current = countDown
-      ? Math.max(value, endVal)
-      : Math.min(value, endVal)
+    printVal = countDown()
+      ? Math.max(value, local.endVal)
+      : Math.min(value, local.endVal)
 
-    setDisplayValue(formatNumber(printVal.current) || '0')
+    setDisplayValue(formatNumber(printVal) || '0')
     if (progress < localDuration) {
-      rAF.current = requestAnimationFrame(count)
+      rAF = requestAnimationFrame(count)
     } else {
-      onFinish && onFinish()
+      local.onFinish && local.onFinish()
     }
   }
 
-  useEffect(() => {
-    return () => {
-      cancelAnimationFrame(rAF.current)
-    }
-  }, [])
+  onCleanup(() => {
+    cancelAnimationFrame(rAF)
+  })
 
   useDidHide(() => {
-    cancelAnimationFrame(rAF.current)
+    cancelAnimationFrame(rAF)
   })
 
   return (
-    <View className={'count-up ' + className || ''}>
-      {prefix && <Text className='count-up__prefix'>{prefix}</Text>}
-      <Text className='count-up__content'>{displayValue}</Text>
-      {suffix && <Text className='count-up__suffix'>{suffix}</Text>}
+    <View class={'count-up ' + local.className || ''}>
+      {local.prefix && <Text class='count-up__prefix'>{local.prefix}</Text>}
+      <Text class='count-up__content'>{displayValue()}</Text>
+      {local.suffix && <Text class='count-up__suffix'>{local.suffix}</Text>}
     </View>
   )
 }
 
-const CountUp = forwardRef(Index)
+const CountUp = Index
 export { CountUp }
 export default CountUp

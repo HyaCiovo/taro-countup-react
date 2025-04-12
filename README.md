@@ -1,8 +1,8 @@
-# Taro-CountUp-React 数字滚动
+# Taro-CountUp-Solid 数字滚动
 
 ### 介绍
 
-`Taro-Countup-React`是一个基于`@tarojs/components`封装的支持`React`框架写法的`Taro`数字滚动组件。
+`Taro-Countup-Solid`是一个基于`@tarojs/components`封装的支持`Solid.js`框架写法的`Taro`数字滚动组件。
 
 该组件适用于需要平滑滚动数字到指定值的场景，支持自定义滚动时间、缓动效果、小数位数显示、千分位分隔符等功能。通过`ref`选择器，你可以方便地控制组件的开始、暂停、继续和重置操作。
 
@@ -56,11 +56,10 @@
 
 ```tsx
 /* eslint-disable */
-import react from 'react'
 import { View, Button } from '@tarojs/components'
 
 export default function Demo() {
-  const CountUpRef = react.useRef<any>()
+  let CountUpRef!: any
   const handleFinish = () => {
     console.log('count finish')
   }
@@ -74,10 +73,10 @@ export default function Demo() {
         onFinish={handleFinish}
       />
       <View>
-        <Button onClick={() => CountUpRef.current?.start()} >开始</Button>
-        <Button onClick={() => CountUpRef.current?.pause()} >暂停</Button>
-        <Button onClick={() => CountUpRef.current?.resume()} >继续</Button>
-        <Button onClick={() => CountUpRef.current?.reset()} >重置</Button>
+        <Button onClick={() => CountUpRef?.start()} >开始</Button>
+        <Button onClick={() => CountUpRef?.pause()} >暂停</Button>
+        <Button onClick={() => CountUpRef?.resume()} >继续</Button>
+        <Button onClick={() => CountUpRef?.reset()} >重置</Button>
       </View>
     </View>
   )
@@ -110,10 +109,10 @@ export default function Demo() {
 | autoStart | 是否自动开始滚动             | _&nbsp;&nbsp;boolean<br/>_                                                                                                                                             | true   | `false` |
 | decimals  | 要显示的小数位数             | _&nbsp;&nbsp;number&nbsp;&brvbar;&nbsp;string<br/>_                                                                                                                    | 0      | `false` |
 | decimal   | 十进制分隔                   | _&nbsp;&nbsp;string<br/>_                                                                                                                                              | .      | `false` |
-| prefix    | 前缀                         | _&nbsp;&nbsp;string&nbsp;&brvbar;&nbsp;ReactNode<br/>_                                                                                                                 | -      | `false` |
-| suffix    | 后缀                         | _&nbsp;&nbsp;string&nbsp;&brvbar;&nbsp;ReactNode<br/>_                                                                                                                 | -      | `false` |
+| prefix    | 前缀                         | _&nbsp;&nbsp;string&nbsp;&brvbar;&nbsp;DOMElement<br/>_                                                                                                                 | -      | `false` |
+| suffix    | 后缀                         | _&nbsp;&nbsp;string&nbsp;&brvbar;&nbsp;DOMElement<br/>_                                                                                                                 | -      | `false` |
 | useEasing | 是否缓动结束滚动             | _&nbsp;&nbsp;boolean<br/>_                                                                                                                                             | true   | `false` |
 | separator | 千分位分隔符                 | _&nbsp;&nbsp;string<br/>_                                                                                                                                              | -      | `false` |
 | onFinish  | 滚动结束时触发               | _&nbsp;&nbsp;()&nbsp;=>&nbsp;void<br/>_                                                                                                                                | -      | `false` |
-| ref       | 数字滚动实例                 | _&nbsp;&nbsp;React.MutableRefObject<<br/>&nbsp;&nbsp;&nbsp;&nbsp;&brvbar;&nbsp;ICountUpRef<br/>&nbsp;&nbsp;&nbsp;&nbsp;&brvbar;&nbsp;undefined<br/>&nbsp;&nbsp;><br/>_ | -      | `false` |
+| ref       | 数字滚动实例                 | _&nbsp;&nbsp;any<br/>_ | -      | `false` |
 

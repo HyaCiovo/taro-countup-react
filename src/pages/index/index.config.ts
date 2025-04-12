@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: 'taro-countup-react'
+  navigationBarTitleText: 'taro-countup-solid'
 })

@@ -6,8 +6,8 @@ import prodConfig from './prod'
 // https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
 export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport<'webpack5'> = {
-    projectName: 'taro-countup-react',
-    date: '2025-4-12',
+    projectName: 'taro-countup-solid',
+    date: '2025-4-13',
     designWidth: 750,
     deviceRatio: {
       640: 2.34 / 2,
@@ -26,10 +26,9 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
       options: {
       }
     },
-    framework: 'react',
+    framework: 'solid',
     compiler: 'webpack5',
     cache: {
-      name:`${process.env.NODE_ENV}-${process.env.TARO_ENV}-${mode}`,
       enable: false // Webpack 持久化缓存配置，建议开启。默认配置请参考：https://docs.taro.zone/docs/config-detail#cache
     },
     mini: {
@@ -54,15 +53,6 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
     },
     h5: {
       publicPath: '/',
-      devServer: {
-        port: 10086,
-        hot: false,
-        host: 'localhost',
-        historyApiFallback: true,
-        headers: {
-          'Access-Control-Allow-Origin': '*', // 表示允许跨域
-        },
-      },
       staticDirectory: 'static',
       output: {
         filename: 'js/[name].[hash:8].js',
@@ -100,7 +90,6 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
     }
   }
 
-  process.env.BROWSERSLIST_ENV = process.env.NODE_ENV
 
   if (process.env.NODE_ENV === 'development') {
     // 本地开发构建配置（不混淆压缩）
