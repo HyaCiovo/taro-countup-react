@@ -86,7 +86,7 @@ export default function Demo() {
 
 ### 效果
 
-<span align="center"><img src="https://github.com/user-attachments/assets/43b7d339-7184-40a1-96e6-c510418c9747" width="400" /></span>
+<span align="center"><img src="https://github.com/user-attachments/assets/c7220dad-301c-463a-9a38-6389546ea2a3" width="400" /></span>
 
 
 
