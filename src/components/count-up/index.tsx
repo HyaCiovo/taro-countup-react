@@ -8,7 +8,7 @@ import {
   forwardRef,
   useImperativeHandle,
 } from 'react'
-import { requestAnimationFrame, cancelAnimationFrame , ensureNumber } from '../utils'
+import { requestAnimationFrame, cancelAnimationFrame , ensureNumber } from './utils'
 import type { CountToProps, ICountToRef } from './types'
 import './index.scss'
 
