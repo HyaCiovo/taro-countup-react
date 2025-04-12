@@ -1,4 +1,4 @@
-# Taro-CountTo-React 数字滚动
+# Taro-CountUp-React 数字滚动
 
 ### 介绍
 
