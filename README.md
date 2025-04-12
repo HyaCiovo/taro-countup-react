@@ -1,5 +1,11 @@
 # Taro-CountUp-Solid 数字滚动
 
+<p align="center">
+    <a href="https://github.com/HyaCiovo/taro-countup/blob/frame/react/README.md">React 版本</a> | <a href="https://github.com/HyaCiovo/taro-countup/blob/frame/solidjs/README.md">Solid.js 版本</a>
+</p>
+
+> 请切换分支查看其他框架版本组件
+
 ### 介绍
 
 `Taro-Countup-Solid`是一个基于`@tarojs/components`封装的支持`Solid.js`框架写法的`Taro`数字滚动组件。
