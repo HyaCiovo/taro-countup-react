@@ -55,7 +55,6 @@ const Index = (props: CountToProps, ref: React.ForwardedRef<ICountToRef>) => {
   const rAF = useRef<any>(null)
   const startTime = useRef<number | null>(null)
   const printVal = useRef<number>(startVal)
-  const lastTime = useRef<number>(0)
 
   const countDown: boolean = useMemo(() => {
     return startVal > endVal
@@ -115,7 +114,6 @@ const Index = (props: CountToProps, ref: React.ForwardedRef<ICountToRef>) => {
     printVal.current = startVal
     remaining.current = null
     startTime.current = null
-    lastTime.current = 0
     setDisplayValue(formatNumber(startVal))
   }
 
