@@ -1,6 +1,6 @@
 import { useDidHide, useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { createMemo, createSignal, mergeProps, onCleanup, onMount, splitProps } from 'solid-js'
+import { createMemo, createSignal, mergeProps, onCleanup, onMount, Show, splitProps } from 'solid-js'
 import { requestAnimationFrame, cancelAnimationFrame, ensureNumber } from './utils'
 import type { CountToProps } from './types'
 import './index.scss'
@@ -179,9 +179,13 @@ const Index = (props: CountToProps) => {
 
   return (
     <View class={'count-up ' + local.className || ''}>
-      {local.prefix && <Text class='count-up__prefix'>{local.prefix}</Text>}
+      <Show when={!!local.prefix}>
+        <Text class='count-up__prefix'>{local.prefix}</Text>
+      </Show>
       <Text class='count-up__content'>{displayValue()}</Text>
-      {local.suffix && <Text class='count-up__suffix'>{local.suffix}</Text>}
+      <Show when={!!local.suffix}>
+        <Text class='count-up__suffix'>{local.suffix}</Text>
+      </Show>
     </View>
   )
 }
